@@ -12,6 +12,7 @@ import SwiftUI
 
 public enum WalletLink: String {
   case MetaMask = "https://metamask.app.link/wc?uri="
+  case Rainbow = "https://rnbwapp.com/wc?uri="
 }
 
 public protocol WalletService {
