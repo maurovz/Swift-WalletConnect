@@ -9,4 +9,5 @@ import Foundation
 
 public enum WalletType: Equatable {
   case WalletConnect
+  case Rainbow
 }
