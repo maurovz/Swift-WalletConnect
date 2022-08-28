@@ -45,7 +45,7 @@ public final class WalletLinkService: WalletService {
   }
 
   public func connect(wallet: WalletLink, completion: @escaping (Result<WalletDetails, Error>) -> Void) {
-    openAppToConnect(getDeepLink(wallet: .MetaMask), delay: 1)
+    openAppToConnect(getDeepLink(wallet: wallet), delay: 1)
 
     // Temp fix to avoid threading issue with async await
     let lock = NSLock()
