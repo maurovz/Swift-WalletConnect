@@ -43,6 +43,20 @@ public final class Glaip: ObservableObject {
           }
         }
       })
+    case .Rainbow:
+      rainbowLogin(completion: { [weak self] result in
+        guard let self = self else { return }
+
+        DispatchQueue.main.async {
+          switch result {
+          case let .success(user):
+            self.userState = .loggedIn(user)
+            self.currentWallet = .Rainbow
+          case let .failure(error):
+            completion(.failure(error))
+          }
+        }
+      })
     }
   }
 
@@ -56,6 +70,29 @@ extension Glaip {
   private func metaMaskLogin(completion: @escaping (Result<User, Error>) -> Void) {
     let service = WalletLinkService(title: title, description: description)
     service.connect(wallet: .MetaMask, completion: { result in
+
+      switch result {
+      case let .success(walletDetails):
+        completion(.success(
+          User(
+            wallet: Wallet(
+              type: .WalletConnect,
+              address: walletDetails.address,
+              chainId: String(walletDetails.chainId))
+          ))
+        )
+      case let .failure(error):
+        completion(.failure(error))
+      }
+    })
+  }
+}
+
+// MARK: - Rainbow Wallet
+extension Glaip {
+  private func rainbowLogin(completion: @escaping (Result<User, Error>) -> Void) {
+    let service = WalletLinkService(title: title, description: description)
+    service.connect(wallet: .Rainbow, completion: { result in
 
       switch result {
       case let .success(walletDetails):

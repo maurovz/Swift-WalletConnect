@@ -12,11 +12,12 @@ import SwiftUI
 
 public enum WalletLink: String {
   case MetaMask = "https://metamask.app.link/wc?uri="
+  case Rainbow = "https://rnbwapp.com/wc?uri="
 }
 
 public protocol WalletService {
   func connect(wallet: WalletLink, completion: @escaping (Result<WalletDetails, Error>) -> Void)
-  func sign(message: String, completion: @escaping (Result<String, Error>) -> Void)
+  func sign(wallet: WalletLink, message: String, completion: @escaping (Result<String, Error>) -> Void)
 }
 
 public struct WalletDetails {
@@ -44,7 +45,7 @@ public final class WalletLinkService: WalletService {
   }
 
   public func connect(wallet: WalletLink, completion: @escaping (Result<WalletDetails, Error>) -> Void) {
-    openAppToConnect(getDeepLink(wallet: .MetaMask), delay: 1)
+    openAppToConnect(wallet: wallet, getDeepLink(wallet: wallet), delay: 1)
 
     // Temp fix to avoid threading issue with async await
     let lock = NSLock()
@@ -67,8 +68,8 @@ public final class WalletLinkService: WalletService {
     }
   }
 
-  public func sign(message: String, completion: @escaping (Result<String, Error>) -> Void) {
-    openAppToConnect(getDeepLink(wallet: .MetaMask), delay: 3)
+  public func sign(wallet: WalletLink, message: String, completion: @escaping (Result<String, Error>) -> Void) {
+    openAppToConnect(wallet: wallet, getDeepLink(wallet: .MetaMask), delay: 3)
 
     walletConnect.sign(message: message, completion: completion)
   }
@@ -78,9 +79,9 @@ public final class WalletLinkService: WalletService {
     walletConnect.reconnectIfNeeded()
   }
 
-  private func openAppToConnect(_ url: String, delay: CGFloat = 0) {
+  private func openAppToConnect(wallet: WalletLink, _ url: String, delay: CGFloat = 0) {
     DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
-      if let url = URL(string: self.getDeepLink(wallet: .MetaMask)), UIApplication.shared.canOpenURL(url) {
+      if let url = URL(string: self.getDeepLink(wallet: wallet)), UIApplication.shared.canOpenURL(url) {
         UIApplication.shared.open(url, options: [:], completionHandler: nil)
       }
     }
