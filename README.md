@@ -149,7 +149,7 @@ Distributed under the Apache 2.0 License.
 <!-- CONTACT -->
 ## Contact
 
-Your Name - [@_mau_vaz](https://twitter.com/_mau_vaz)
+Mauricio Vazquez - [@_mau_vaz](https://twitter.com/_mau_vaz)
 
 Project Link: [https://github.com/maurovz/Glaip](https://github.com/maurovz/Glaip)
 
