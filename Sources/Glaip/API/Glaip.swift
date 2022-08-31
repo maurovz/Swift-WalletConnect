@@ -33,27 +33,31 @@ public final class Glaip: ObservableObject {
       metaMaskLogin(completion: { [weak self] result in
         guard let self = self else { return }
 
-          switch result {
-          case let .success(user):
+        switch result {
+        case let .success(user):
+          DispatchQueue.main.async {
             self.userState = .loggedIn(user)
-            self.currentWallet = .WalletConnect
-            completion(.success(user))
-          case let .failure(error):
-            completion(.failure(error))
           }
+          self.currentWallet = .WalletConnect
+          completion(.success(user))
+        case let .failure(error):
+          completion(.failure(error))
+        }
       })
     case .Rainbow:
       rainbowLogin(completion: { [weak self] result in
         guard let self = self else { return }
 
-          switch result {
-          case let .success(user):
+        switch result {
+        case let .success(user):
+          DispatchQueue.main.async {
             self.userState = .loggedIn(user)
-            self.currentWallet = .Rainbow
-            completion(.success(user))
-          case let .failure(error):
-            completion(.failure(error))
           }
+          self.currentWallet = .Rainbow
+          completion(.success(user))
+        case let .failure(error):
+          completion(.failure(error))
+        }
       })
     }
   }
