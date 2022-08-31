@@ -27,35 +27,33 @@ public final class Glaip: ObservableObject {
     self.walletConnect = WalletLinkService(title: title, description: description)
   }
 
-  public func loginUser(type: WalletType, completion: @escaping (Result<String, Error>) -> Void) {
+  public func loginUser(type: WalletType, completion: @escaping (Result<User, Error>) -> Void) {
     switch type {
     case .WalletConnect:
       metaMaskLogin(completion: { [weak self] result in
         guard let self = self else { return }
 
-        DispatchQueue.main.async {
           switch result {
           case let .success(user):
             self.userState = .loggedIn(user)
             self.currentWallet = .WalletConnect
+            completion(.success(user))
           case let .failure(error):
             completion(.failure(error))
           }
-        }
       })
     case .Rainbow:
       rainbowLogin(completion: { [weak self] result in
         guard let self = self else { return }
 
-        DispatchQueue.main.async {
           switch result {
           case let .success(user):
             self.userState = .loggedIn(user)
             self.currentWallet = .Rainbow
+            completion(.success(user))
           case let .failure(error):
             completion(.failure(error))
           }
-        }
       })
     }
   }
