@@ -8,8 +8,8 @@
 import Foundation
 
 public struct Wallet: Equatable {
-  let type: WalletType
-  let address: String
-  let chainId: String
+  public let type: WalletType
+  public let address: String
+  public let chainId: String
 }
 
