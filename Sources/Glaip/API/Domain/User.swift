@@ -8,6 +8,10 @@
 import Foundation
 
 public struct User: Equatable {
-  let wallet: Wallet
+  public init(wallet: Wallet) {
+    self.wallet = wallet
+  }
+
+  public let wallet: Wallet
 }
 
