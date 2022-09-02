@@ -11,12 +11,11 @@ import Combine
 public final class Glaip: ObservableObject {
   private let walletConnect: WalletLinkService
 
-  let title: String
-  let description: String
-
+  public let title: String
+  public let description: String
   public let supportedWallets: [WalletType]
 
-  var currentWallet: WalletType?
+  public var currentWallet: WalletType?
 
   @Published public var userState: UserState = .unregistered
 
