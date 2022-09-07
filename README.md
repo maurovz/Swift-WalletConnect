@@ -184,4 +184,4 @@ Project Link: [https://github.com/maurovz/Glaip](https://github.com/maurovz/Glai
 [linkedin-url]: https://linkedin.com/in/othneildrew
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/othneildrew
-[product-demo]: https://i.imgur.com/6SeG5z2.gif
+[product-demo]: https://i.imgur.com/tRtGx4X.gif
