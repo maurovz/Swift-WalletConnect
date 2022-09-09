@@ -8,6 +8,6 @@
 import Foundation
 
 public enum WalletType: Equatable {
-  case WalletConnect
+  case MetaMask
   case Rainbow
 }
