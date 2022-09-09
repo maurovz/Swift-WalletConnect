@@ -28,7 +28,7 @@ public final class Glaip: ObservableObject {
 
   public func loginUser(type: WalletType, completion: @escaping (Result<User, Error>) -> Void) {
     switch type {
-    case .WalletConnect:
+    case .MetaMask:
       metaMaskLogin(completion: { [weak self] result in
         guard let self = self else { return }
 
@@ -37,7 +37,7 @@ public final class Glaip: ObservableObject {
           DispatchQueue.main.async {
             self.userState = .loggedIn(user)
           }
-          self.currentWallet = .WalletConnect
+          self.currentWallet = .MetaMask
           completion(.success(user))
         case let .failure(error):
           completion(.failure(error))
@@ -77,7 +77,7 @@ extension Glaip {
         completion(.success(
           User(
             wallet: Wallet(
-              type: .WalletConnect,
+              type: .MetaMask,
               address: walletDetails.address,
               chainId: String(walletDetails.chainId))
           ))
@@ -100,7 +100,7 @@ extension Glaip {
         completion(.success(
           User(
             wallet: Wallet(
-              type: .WalletConnect,
+              type: .MetaMask,
               address: walletDetails.address,
               chainId: String(walletDetails.chainId))
           ))
