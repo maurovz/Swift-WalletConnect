@@ -102,7 +102,14 @@ Adding the connect event to a SwiftUI button:
 
  ```sh
 Button("Connect to MetaMask") {
-    self.glaip.connect()
+    glaip.loginUser(type: .MetaMask) { result in
+      switch result {
+      case .success(let user):
+        print(user.wallet.address)
+      case .failure(let error):
+        print(error)
+      }
+   }
 }
    
    ```
