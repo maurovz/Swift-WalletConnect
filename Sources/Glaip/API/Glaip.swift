@@ -30,14 +30,12 @@ public final class Glaip: ObservableObject {
     switch type {
     case .MetaMask:
       metaMaskLogin(completion: { [weak self] result in
-        guard let self = self else { return }
-
         switch result {
         case let .success(user):
           DispatchQueue.main.async {
-            self.userState = .loggedIn(user)
+            self?.userState = .loggedIn(user)
           }
-          self.currentWallet = .MetaMask
+          self?.currentWallet = .MetaMask
           completion(.success(user))
         case let .failure(error):
           completion(.failure(error))
@@ -45,14 +43,12 @@ public final class Glaip: ObservableObject {
       })
     case .Rainbow:
       rainbowLogin(completion: { [weak self] result in
-        guard let self = self else { return }
-
         switch result {
         case let .success(user):
           DispatchQueue.main.async {
-            self.userState = .loggedIn(user)
+            self?.userState = .loggedIn(user)
           }
-          self.currentWallet = .Rainbow
+          self?.currentWallet = .Rainbow
           completion(.success(user))
         case let .failure(error):
           completion(.failure(error))
