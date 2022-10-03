@@ -54,6 +54,19 @@ public final class Glaip: ObservableObject {
           completion(.failure(error))
         }
       })
+    case .TrustWallet:
+      trustWalletLogin(completion: { [weak self] result in
+        switch result {
+        case let .success(user):
+          DispatchQueue.main.async {
+            self?.userState = .loggedIn(user)
+          }
+          self?.currentWallet = .TrustWallet
+          completion(.success(user))
+        case let .failure(error):
+          completion(.failure(error))
+        }
+      })
     }
   }
 
@@ -90,6 +103,29 @@ extension Glaip {
   private func rainbowLogin(completion: @escaping (Result<User, Error>) -> Void) {
     let service = WalletLinkService(title: title, description: description)
     service.connect(wallet: .Rainbow, completion: { result in
+
+      switch result {
+      case let .success(walletDetails):
+        completion(.success(
+          User(
+            wallet: Wallet(
+              type: .MetaMask,
+              address: walletDetails.address,
+              chainId: String(walletDetails.chainId))
+          ))
+        )
+      case let .failure(error):
+        completion(.failure(error))
+      }
+    })
+  }
+}
+
+// MARK: - TrustWallet
+extension Glaip {
+  private func trustWalletLogin(completion: @escaping (Result<User, Error>) -> Void) {
+    let service = WalletLinkService(title: title, description: description)
+    service.connect(wallet: .TrustWallet, completion: { result in
 
       switch result {
       case let .success(walletDetails):
