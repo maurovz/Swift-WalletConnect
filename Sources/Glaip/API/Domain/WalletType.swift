@@ -10,4 +10,5 @@ import Foundation
 public enum WalletType: Equatable {
   case MetaMask
   case Rainbow
+  case TrustWallet
 }
