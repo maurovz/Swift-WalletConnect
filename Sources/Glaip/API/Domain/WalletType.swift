@@ -5,10 +5,8 @@
 //  Created by Mauricio Vazquez on 15/8/22.
 //
 
-import Foundation
-
-public enum WalletType: Equatable {
-  case MetaMask
-  case Rainbow
-  case TrustWallet
+public enum WalletType: String, Equatable {
+  case MetaMask = "https://metamask.app.link/wc?uri="
+  case Rainbow = "https://rnbwapp.com/wc?uri="
+  case TrustWallet = "https://link.trustwallet.com/wc?uri="
 }
