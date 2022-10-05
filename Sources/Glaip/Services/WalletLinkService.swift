@@ -10,15 +10,9 @@ import Foundation
 import WalletConnectSwift
 import SwiftUI
 
-public enum WalletLink: String {
-  case MetaMask = "https://metamask.app.link/wc?uri="
-  case Rainbow = "https://rnbwapp.com/wc?uri="
-  case TrustWallet = "https://link.trustwallet.com/wc?uri="
-}
-
 public protocol WalletService {
-  func connect(wallet: WalletLink, completion: @escaping (Result<WalletDetails, Error>) -> Void)
-  func sign(wallet: WalletLink, message: String, completion: @escaping (Result<String, Error>) -> Void)
+  func connect(wallet: WalletType, completion: @escaping (Result<WalletDetails, Error>) -> Void)
+  func sign(wallet: WalletType, message: String, completion: @escaping (Result<String, Error>) -> Void)
 }
 
 public struct WalletDetails {
@@ -45,7 +39,7 @@ public final class WalletLinkService: WalletService {
     setWalletConnect()
   }
 
-  public func connect(wallet: WalletLink, completion: @escaping (Result<WalletDetails, Error>) -> Void) {
+  public func connect(wallet: WalletType, completion: @escaping (Result<WalletDetails, Error>) -> Void) {
     openAppToConnect(wallet: wallet, getDeepLink(wallet: wallet), delay: 1)
 
     // Temp fix to avoid threading issue with async await
@@ -69,7 +63,7 @@ public final class WalletLinkService: WalletService {
     }
   }
 
-  public func sign(wallet: WalletLink, message: String, completion: @escaping (Result<String, Error>) -> Void) {
+  public func sign(wallet: WalletType, message: String, completion: @escaping (Result<String, Error>) -> Void) {
     openAppToConnect(wallet: wallet, getDeepLink(wallet: .MetaMask), delay: 3)
 
     walletConnect.sign(message: message, completion: completion)
@@ -80,7 +74,7 @@ public final class WalletLinkService: WalletService {
     walletConnect.reconnectIfNeeded()
   }
 
-  private func openAppToConnect(wallet: WalletLink, _ url: String, delay: CGFloat = 0) {
+  private func openAppToConnect(wallet: WalletType, _ url: String, delay: CGFloat = 0) {
     DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
       if let url = URL(string: self.getDeepLink(wallet: wallet)), UIApplication.shared.canOpenURL(url) {
         UIApplication.shared.open(url, options: [:], completionHandler: nil)
@@ -88,7 +82,7 @@ public final class WalletLinkService: WalletService {
     }
   }
 
-  private func getDeepLink(wallet: WalletLink) -> String {
+  private func getDeepLink(wallet: WalletType) -> String {
     let connectionUrl = walletConnect.connect(title: title, description: description)
     let encodeURL = connectionUrl.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) ?? ""
     let end = encodeURL.replacingOccurrences(of: "=", with: "%3D").replacingOccurrences(of: "&", with: "%26")
