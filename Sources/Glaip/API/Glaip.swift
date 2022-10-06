@@ -64,26 +64,3 @@ public final class Glaip: ObservableObject {
     })
   }
 }
-
-// MARK: - TrustWallet
-extension Glaip {
-  private func trustWalletLogin(completion: @escaping (Result<User, Error>) -> Void) {
-    let service = WalletLinkService(title: title, description: description)
-    service.connect(wallet: .TrustWallet, completion: { result in
-
-      switch result {
-      case let .success(walletDetails):
-        completion(.success(
-          User(
-            wallet: Wallet(
-              type: .MetaMask,
-              address: walletDetails.address,
-              chainId: String(walletDetails.chainId))
-          ))
-        )
-      case let .failure(error):
-        completion(.failure(error))
-      }
-    })
-  }
-}
